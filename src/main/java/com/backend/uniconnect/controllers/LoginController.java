@@ -1,27 +1,30 @@
 package com.backend.uniconnect.controllers;
 
 import com.backend.uniconnect.persistence.entities.User;
-import com.backend.uniconnect.services.impl.UserService;
+import com.backend.uniconnect.persistence.entities.dto.LoginResponseDto;
+import com.backend.uniconnect.services.impl.LoginServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/api/v1/")
 public class LoginController {
 
 
-    private final UserService userService;
+    private final LoginServiceImpl loginServiceImpl;
 
     @Autowired
-    public LoginController(UserService userService) {
-        this.userService = userService;
+    public LoginController(LoginServiceImpl loginServiceImpl) {
+        this.loginServiceImpl = loginServiceImpl;
     }
 
-    @PostMapping("/login/user")
-    public boolean authenticateUser(@RequestBody User user){
+    @PostMapping("login/user")
+    public ResponseEntity<LoginResponseDto> authenticateUser(@RequestBody User user){
 
-        return userService.authenticateUser(user);
+        return ResponseEntity.ok(loginServiceImpl.authenticateUser(user));
     }
 }
